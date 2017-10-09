@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Evolution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+body{
+	margin:0px 0px 0px 0px;
+}
+h1{
+	position: relative;
+	left: 30%;
+}
+.rowCard{
+	margin-top: 10px;
+}
+.numberCard{
+	background: blue;
+	width: 70px;
+	display: inline-block;
+	padding: 10px;
+	margin: 10px;
+	text-align: center;
+	font-size: 50px;
+}
+</style>
+<script type='text/javascript'>
+window.onload = function() {
+
+var swap = function(arr, i, j)
+{
+	var temp = arr[i];
+	arr[i] = arr[j];
+	arr[j] = temp;
+}
+
+var showGroups = function(totalNum, groupNum)
+{
+	var totalNums = [];
+	var numbers = [];
+	for (var i = 0; i < totalNum; ++i) {
+		totalNums.push(i+1);
+	}
+	for (var i = 0; i < totalNum; ++i) {
+		var pickIndex = i + Math.floor(Math.random() * (totalNum-i) );
+		swap(totalNums, i, pickIndex);
+	}
+	var row = [];
+	for (var i = 0; i < totalNum; ++i) {
+		row.push(totalNums[i]);
+		if (0 == (i+1) % groupNum) {
+			numbers.push(row);
+			row = [];
+		}
+	}
+	numbers.push(row);
+
+	for (var i = 0; i < numbers.length; ++i) {
+		var row = document.createElement("div");
+		row.setAttribute("class", "rowCard");
+		for (var j = 0; j < numbers[i].length; ++j) {
+			var element = document.createElement("div");
+			var newContent = document.createTextNode(parseInt(numbers[i][j])); 
+			element.setAttribute("class", "numberCard");
+			element.appendChild(newContent);
+			row.appendChild(element);
+		}
+		document.body.appendChild(row);
+	}
+}
+
+var reloadPage = function()
+{
+	window.location.reload(true);
+}
+
+var totalNumObj = document.getElementById("totalNum");
+var groupNumObj = document.getElementById("groupNum");
+totalNumObj.onchange = reloadPage;
+groupNumObj.onchange = reloadPage;
+var totalNum = totalNumObj.value;
+var groupNum = groupNumObj.value;
+showGroups(totalNum, groupNum);
+} // window.onload
+</script>
+</head>
+<body>
+<h1>Lottery Generator!</h1>
+<label>Maximum Number:</label>
+<input id="totalNum" type="number" value="42">
+<label>Group Number:</label>
+<input id="groupNum" type="number" value="6">
+</body>
+</html>
