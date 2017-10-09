@@ -34,7 +34,7 @@ var swap = function(arr, i, j)
 	arr[j] = temp;
 }
 
-var showGroups = function(totalNum, groupNum)
+var showGroups = function(showAreaObj, totalNum, groupNum)
 {
 	var totalNums = [];
 	var numbers = [];
@@ -49,10 +49,12 @@ var showGroups = function(totalNum, groupNum)
 	for (var i = 0; i < totalNum; ++i) {
 		row.push(totalNums[i]);
 		if (0 == (i+1) % groupNum) {
+			row.sort(function(a, b) {return a - b;});
 			numbers.push(row);
 			row = [];
 		}
 	}
+	row.sort(function(a, b) {return a - b;});
 	numbers.push(row);
 
 	for (var i = 0; i < numbers.length; ++i) {
@@ -65,13 +67,22 @@ var showGroups = function(totalNum, groupNum)
 			element.appendChild(newContent);
 			row.appendChild(element);
 		}
-		document.body.appendChild(row);
+		showAreaObj.appendChild(row);
 	}
 }
 
 var reloadPage = function()
 {
-	window.location.reload(true);
+	var showAreaObj = document.getElementById("showArea");
+	showAreaObj.parentNode.removeChild(showAreaObj);
+	var newShowAreaObj = document.createElement("div");
+	newShowAreaObj.id = "showArea";
+	var totalNumObj = document.getElementById("totalNum");
+	var groupNumObj = document.getElementById("groupNum");
+	var totalNum = totalNumObj.value;
+	var groupNum = groupNumObj.value;
+	showGroups(newShowAreaObj, totalNum, groupNum);
+	document.body.appendChild(newShowAreaObj);
 }
 
 var totalNumObj = document.getElementById("totalNum");
@@ -80,7 +91,10 @@ totalNumObj.onchange = reloadPage;
 groupNumObj.onchange = reloadPage;
 var totalNum = totalNumObj.value;
 var groupNum = groupNumObj.value;
-showGroups(totalNum, groupNum);
+var showAreaObj = document.createElement("div");
+showAreaObj.id = "showArea";
+document.body.appendChild(showAreaObj);
+showGroups(showAreaObj, totalNum, groupNum);
 } // window.onload
 </script>
 </head>
