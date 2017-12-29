@@ -34,18 +34,20 @@ var swap = function(arr, i, j)
 	arr[j] = temp;
 }
 
-var showGroups = function(showAreaObj, totalNum, groupNum)
+var permu = function(totalNums)
 {
-	var totalNums = [];
-	var numbers = [];
-	for (var i = 0; i < totalNum; ++i) {
-		totalNums.push(i+1);
-	}
+	var totalNum = totalNums.length;
 	for (var i = 0; i < totalNum; ++i) {
 		var pickIndex = i + Math.floor(Math.random() * (totalNum-i) );
 		swap(totalNums, i, pickIndex);
 	}
+}
+
+var grouping = function(totalNums, groupNum)
+{
 	var row = [];
+	var numbers = [];
+	var totalNum = totalNums.length;
 	for (var i = 0; i < totalNum; ++i) {
 		row.push(totalNums[i]);
 		if (0 == (i+1) % groupNum) {
@@ -56,6 +58,17 @@ var showGroups = function(showAreaObj, totalNum, groupNum)
 	}
 	row.sort(function(a, b) {return a - b;});
 	numbers.push(row);
+	return numbers;
+}
+
+var showGroups = function(showAreaObj, totalNum, groupNum)
+{
+	var totalNums = [];
+	for (var i = 0; i < totalNum; ++i) {
+		totalNums.push(i+1);
+	}
+	permu(totalNums);
+	var numbers = grouping(totalNums, groupNum);
 
 	for (var i = 0; i < numbers.length; ++i) {
 		var row = document.createElement("div");
